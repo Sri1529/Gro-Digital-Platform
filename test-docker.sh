@@ -53,3 +53,4 @@ echo ""
 echo "📋 Or manually:"
 echo "   docker-compose up --build"
 
+
