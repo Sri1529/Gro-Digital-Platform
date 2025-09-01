@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-// Toast Container Styles
 export const ToastWrapper = styled(motion.div)`
   position: relative;
   min-width: 320px;

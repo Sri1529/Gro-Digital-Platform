@@ -3,7 +3,7 @@ import Confetti from "react-confetti";
 import { FaRocket, FaStar, FaGlobe, FaSignOutAlt, FaShieldAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { logout } from "../store/reducer/loginReducer";
 import { ValidateTokenAction } from "../store/actions/validateTokenAction";
 import {
@@ -18,11 +18,25 @@ import {
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const welcomeShownRef = useRef(false);
 
-  // Get token validation state
   const { isValid, loading, user, error } = useSelector((state) => state.validateToken);
+  const { accessToken } = useSelector((state) => state.login);
 
-  // floating animation for icons
+  useEffect(() => {
+    if (!accessToken) {
+      navigate('/login', { replace: true });
+      return;
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (user && !welcomeShownRef.current && window.toast) {
+      window.toast.auth(`Welcome back, ${user.name || 'User'}!`, 4000);
+      welcomeShownRef.current = true;
+    }
+  }, [user]);
+
   const floatProps = useSpring({
     from: { transform: "translateY(0px)" },
     to: { transform: "translateY(-20px)" },
@@ -30,20 +44,23 @@ const Dashboard = () => {
     loop: { reverse: true },
   });
 
-  useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const result = await dispatch(ValidateTokenAction()).unwrap();
-        if (window.toast) {
-          window.toast.auth(`Token validated successfully! Welcome ${result.user?.name || 'User'}!`, 4000);
-        }
-      } catch (error) {
-        console.log("Token validation failed:", error);
-      }
-    };
-    const timer = setTimeout(validateToken, 1000);
-    return () => clearTimeout(timer);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const validateToken = async () => {
+  //     try {
+  //       const result = await dispatch(ValidateTokenAction()).unwrap();
+  //       if (window.toast) {
+  //         window.toast.auth(`Token validated successfully! Welcome ${result.user?.name || 'User'}!`, 4000);
+  //       }
+  //     } catch (error) {
+  //       console.log("Token validation failed:", error);
+  //       // If token validation fails, logout and redirect
+  //       dispatch(logout());
+  //       navigate('/login', { replace: true });
+  //     }
+  //   };
+  //   const timer = setTimeout(validateToken, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [dispatch, navigate]);
 
   const handleLogout = () => {
     window.toast?.logout("Logging out...", 2000);

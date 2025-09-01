@@ -50,7 +50,6 @@ const ToastContainer = ({ position = 'top-right' }) => {
     return addToast({ message, type: 'auth', duration });
   }, [addToast]);
 
-  // Expose methods globally for easy access
   React.useEffect(() => {
     window.toast = {
       success: showSuccess,

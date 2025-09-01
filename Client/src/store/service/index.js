@@ -8,7 +8,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// helper to set/update access token
 export const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -23,7 +22,6 @@ api.interceptors.response.use(
     const newToken = response.headers["x-access-token"];
     if (newToken) {
       setAuthToken(newToken);
-      // Update localStorage directly since we don't have persist
       localStorage.setItem("accessToken", newToken);
     }
     return response;

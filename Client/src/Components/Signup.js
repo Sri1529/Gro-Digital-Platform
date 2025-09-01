@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
   TextField,
@@ -29,10 +29,16 @@ const Signup = ({ onSwitch }) => {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { accessToken } = useSelector((state) => state.login);
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [accessToken, navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    // Clear error when user starts typing
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: "" });
     }
@@ -62,7 +68,6 @@ const Signup = ({ onSwitch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Show loading toast
       window.toast?.info("Creating your account...", 2000);
       
       dispatch(SignupAction({

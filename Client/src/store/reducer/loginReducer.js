@@ -20,8 +20,11 @@ const loginSlice = createSlice({
     },
     logout: (state) => {
       state.accessToken = null;
-      state.user = null;
+      state.user = { name: "", email: "" };
+      state.loading = false;
+      state.error = null;
       localStorage.removeItem("accessToken");
+      sessionStorage.clear();
     },
   },
   extraReducers: (builder) => {

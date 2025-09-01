@@ -33,7 +33,6 @@ export const validateToken = async (req, res, next) => {
 
                 const user = result.rows[0];
                 console.log("creating new token")
-                // Generate new access token
                 const newAccessToken = jwt.sign(
                     { id: user.id, email: user.email },
                     JWT_SECRET,
