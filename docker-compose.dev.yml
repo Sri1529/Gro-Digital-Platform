@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  client:
+    build: 
+      context: ./Client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./Client:/app
+      - /app/node_modules
+    depends_on:
+      - server
+    networks:
+      - gro-network
+    stdin_open: true
+    tty: true
+
+  server:
+    build: 
+      context: ./Server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    volumes:
+      - ./Server:/app
+      - /app/node_modules
+    networks:
+      - gro-network
+
+networks:
+  gro-network:
+    driver: bridge
+
