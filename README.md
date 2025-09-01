@@ -56,6 +56,84 @@ docker-compose down
 docker-compose restart
 ```
 
+## 🐳 Individual Docker Run Commands
+
+### Run Client Only
+```bash
+# Navigate to Client directory
+cd Client
+
+# Build client image
+docker build -t gro-client .
+
+# Run client container
+docker run -d -p 3000:3000 --name gro-client-container gro-client
+```
+
+### Run Server Only
+```bash
+# Navigate to Server directory
+cd Server
+
+# Build server image
+docker build -t gro-server .
+
+# Run server container with environment variables
+docker run -d -p 9000:9000 \
+  -e DB_URL="postgresql://neondb_owner:npg_sJd6YrU9TIRe@ep-quiet-boat-adsoiwlh-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" \
+  -e PORT=9000 \
+  --name gro-server-container gro-server
+```
+
+### Run Both Separately
+```bash
+# Terminal 1 - Start Server
+cd Server
+docker build -t gro-server .
+docker run -d -p 9000:9000 \
+  -e DB_URL="postgresql://neondb_owner:npg_sJd6YrU9TIRe@ep-quiet-boat-adsoiwlh-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" \
+  -e PORT=9000 \
+  --name gro-server-container gro-server
+
+# Terminal 2 - Start Client
+cd Client
+docker build -t gro-client .
+docker run -d -p 3000:3000 --name gro-client-container gro-client
+```
+
+### Development Mode (Client with Hot Reload)
+```bash
+# Navigate to Client directory
+cd Client
+
+# Build development image
+docker build -f Dockerfile.dev -t gro-client-dev .
+
+# Run with volume mounting for live reload
+docker run -d -p 3000:3000 \
+  -v $(pwd):/app \
+  --name gro-client-dev-container gro-client-dev
+```
+
+### Container Management
+```bash
+# View running containers
+docker ps
+
+# View logs
+docker logs gro-client-container
+docker logs gro-server-container
+
+# Stop containers
+docker stop gro-client-container gro-server-container
+
+# Remove containers
+docker rm gro-client-container gro-server-container
+
+# Restart containers
+docker restart gro-client-container gro-server-container
+```
+
 ## 📁 Project Structure
 ```
 Gro Digital Platform/
