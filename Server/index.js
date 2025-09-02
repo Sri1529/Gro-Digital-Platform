@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000", 
+    origin: process.env.REACT_APP_API_URL, 
     credentials: true,      
   })
 )
