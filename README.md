@@ -222,4 +222,21 @@ For issues, check the troubleshooting section or open a GitHub issue.
 
 ---
 
+
+## 🚧 Improvements & Future Work
+
+This project is a **minimal setup** to demonstrate a full-stack authentication flow with Dockerized services.  
+Some areas for improvement include:
+
+- **Folder Structure** → Can be organized better for scalability (e.g., separating routes, controllers, and services).  
+- **API Coverage** → Currently only limited auth-related APIs are included; more endpoints (user profile, role management, etc.) can be added.  
+- **Environment Variables** → `.env` files will not be pushed for security, but additional secrets/configs should be managed properly (e.g., `.gitignore` should include more sensitive files).  
+- **Testing** → Add unit tests and integration tests for both frontend and backend.  
+- **CI/CD** → Automate builds and deployments using GitHub Actions or similar pipelines.  
+- **Production Setup** → Add reverse proxy (NGINX) and SSL/TLS support for secure deployments.  
+- **Error Handling & Logging** → Improve structured error responses and centralized logging.  
+
+---
+
+
 ✨ **Made with React, Node.js, PostgreSQL, and Docker** ✨  
